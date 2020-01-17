@@ -1,10 +1,6 @@
 const t = [1, -1, 3]
 
-t.push(5)
+const t2 = t.concat(5)
 
-console.log(t.length)
-console.log(t[1])
-
-t.forEach(value => {
-    console.log(value)
-})
+console.log(t)
+console.log(t2)
