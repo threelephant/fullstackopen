@@ -4,10 +4,7 @@ import ReactDOM from 'react-dom';
 // import App from './App';
 // import * as serviceWorker from './serviceWorker';
 
-const Hello = (props) => {
-    const name = props.name
-    const age = props.age
-
+const Hello = ({ name, age }) => {
     const bornYear = () => new Date().getFullYear() - age
 
     return (
