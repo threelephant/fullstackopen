@@ -13,10 +13,16 @@ const App = (props) => {
 
 let counter = 1
 
-ReactDOM.render {
-    <App counter={counter}/>,
-    document.getElementById('root')
+const refresh = () => {
+    ReactDOM.render(<App counter={counter} />,
+    document.getElementById('root'))
 }
+
+refresh()
+counter += 1
+refresh()
+counter += 1
+refresh()
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
