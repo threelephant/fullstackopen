@@ -1,11 +1,11 @@
 const sum = (p1, p2) => {
-    console.log(p1)
-    console.log(p2)
+    // console.log(p1)
+    // console.log(p2)
     return p1 + p2
 }
 
 const result = sum(1, 5)
-console.log(result)
+// console.log(result)
 
 const square = p => p * p
 
@@ -23,3 +23,35 @@ const average = function(a, b) {
 }
 
 const result3 = average(2, 5)
+
+const arto = {
+    name: 'Arto Hellas',
+    age: 35,
+    education: 'PhD',
+    greet: function() {
+        console.log('hello, my name is', this.name)
+    },
+    doAddition: function(a, b) {
+        console.log(a + b)
+    },
+}
+
+arto.growOlder = function() {
+    this.age += 1
+}
+
+// console.log(arto.age)
+// arto.growOlder()
+// console.log(arto.age)
+
+// arto.doAddition(1, 4)
+
+// const referenceToAddition = arto.doAddition
+// referenceToAddition(10, 15)
+
+// arto.greet()
+
+// const referenceToGreet = arto.greet
+// referenceToGreet()
+
+setTimeout(arto.greet.bind(arto), 1000)
