@@ -18,11 +18,10 @@ const refresh = () => {
     document.getElementById('root'))
 }
 
-refresh()
-counter += 1
-refresh()
-counter += 1
-refresh()
+setInterval(() => {
+    refresh()
+    counter += 1
+}, 1000)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
