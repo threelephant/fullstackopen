@@ -73,3 +73,4 @@ const janja = new Person('Janja Garnbret', 22)
 janja.greet()
 
 console.log('test')
+console.log('test2')
