@@ -46,8 +46,10 @@ const App = () => {
             exercises: 14
         }
     ]
-    const parts_arr = [parts[0].name, parts[1].name, parts[2].name]
-    const exercises = [parts[0].exercises, parts[1].exercises, parts[2].exercises]
+    
+    const parts_arr = parts.map(value => value.name)
+    const exercises = parts.map(value => value.exercises)
+
     return (
         <div>
             <Header course={course} />
