@@ -18,3 +18,10 @@ const object3 = {
     grades: [2, 3, 5, 3],
     department: 'Standford University',
 }
+
+console.log(object1.name)
+const fieldName = 'age'
+console.log(object1[fieldName])
+
+object1.address = 'Helsinki'
+object1['secret number'] = 12341
