@@ -1,27 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+// import './index.css';
 // import App from './App';
 // import * as serviceWorker from './serviceWorker';
 
 const App = (props) => {
-    const {counter} = props
+    const [ counter, setCounter ] = useState(0)
+
+    setTimeout(
+        () => setCounter(counter + 1),
+        1000
+    )
+
     return (
         <div>{counter}</div>
     )
 }
 
-let counter = 1
+ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+)
 
-const refresh = () => {
-    ReactDOM.render(<App counter={counter} />,
-    document.getElementById('root'))
-}
-
-setInterval(() => {
-    refresh()
-    counter += 1
-}, 1000)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
