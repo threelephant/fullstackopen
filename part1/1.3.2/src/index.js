@@ -4,11 +4,7 @@ import ReactDOM from 'react-dom';
 const App = (props) => {
     const [ counter, setCounter ] = useState(0)
 
-    const setToValue = (value) => {
-        return () => {
-            setCounter(value)
-        }
-    }
+    const setToValue = (value) => () => setCounter(value)
 
     return (
         <div>
