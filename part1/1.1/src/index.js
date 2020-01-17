@@ -16,18 +16,22 @@ const Part = (props) => {
 
 const Content = (props) => {
     console.log(props)
+
     return (
     <>
-        <Part part={props.parts[0]} exercise={props.exercises[0]}/>
-        <Part part={props.parts[1]} exercise={props.exercises[1]}/>
-        <Part part={props.parts[2]} exercise={props.exercises[2]}/>
+        <Part part={props.parts[0].name} exercise={props.parts[0].exercises}/>
+        <Part part={props.parts[1].name} exercise={props.parts[1].exercises}/>
+        <Part part={props.parts[2].name} exercise={props.parts[2].exercises}/>
     </>
     )
 }
 
 const Footer = (props) => {
     console.log(props)
-    return <p>Number of exercises {props.exercises[0] + props.exercises[1] + props.exercises[2]}</p>
+    const exercises = props.parts.map(value => value.exercises)
+    const total = exercises.reduce((sum, current) =>  sum + current)
+    console.log(total)
+    return <p>Number of exercises {total}</p>
 }
 
 const App = () => {
@@ -46,15 +50,12 @@ const App = () => {
             exercises: 14
         }
     ]
-    
-    const parts_arr = parts.map(value => value.name)
-    const exercises = parts.map(value => value.exercises)
 
     return (
         <div>
             <Header course={course} />
-            <Content parts={parts_arr} exercises={exercises}/>
-            <Footer exercises={exercises}/>
+            <Content parts={parts}/>
+            <Footer parts={parts}/>
         </div>
     )
 }
