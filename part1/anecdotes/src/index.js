@@ -4,6 +4,7 @@ import './index.css'
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(Array.apply(null, new Array(6)).map(Number.prototype.valueOf,0))
 
   const nextAnecdote = () => {
     if (selected + 1 === props.anecdotes.length) {
@@ -13,9 +14,19 @@ const App = (props) => {
     }
   }
 
+  const upVote = (anecdote) => () => {
+    const copy = [...votes]
+    copy[anecdote] += 1
+    setVotes(copy)
+  }
+
   return (
     <>
       <p>{props.anecdotes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
+      <button onClick={upVote(selected)}>
+        vote
+      </button>
       <button onClick={nextAnecdote}>
         next anecdote
       </button>
