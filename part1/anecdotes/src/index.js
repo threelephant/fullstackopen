@@ -4,6 +4,7 @@ import './index.css'
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [maxVotes, setMaxVotes] = useState(0)
   const [votes, setVotes] = useState(Array.apply(null, new Array(6)).map(Number.prototype.valueOf,0))
 
   const nextAnecdote = () => {
@@ -18,10 +19,14 @@ const App = (props) => {
     const copy = [...votes]
     copy[anecdote] += 1
     setVotes(copy)
+
+    let maxVote = copy.indexOf(Math.max(...copy))
+    setMaxVotes(maxVote)
   }
 
   return (
     <>
+    <h2>Anecdote of the day</h2>
       <p>{props.anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
       <button onClick={upVote(selected)}>
@@ -30,6 +35,8 @@ const App = (props) => {
       <button onClick={nextAnecdote}>
         next anecdote
       </button>
+      <h2>Anecdote with most votes</h2>
+      <p>{props.anecdotes[maxVotes]}</p>
     </>
   )
 }
