@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const CountryInfo = ({ country }) => (
+const CountryInfo = ({ country, weather }) => (
   <div key={country.numericCode}>
     <h2>{country.name}</h2>
     <p>capital {country.capital}</p>
+    <p>population {country.population}</p>
     <h3>languages</h3>
     <ul>
       {
@@ -25,6 +26,12 @@ const CountryInfo = ({ country }) => (
         width={300}>
       </img>
     </div>
+    <div>
+      <h3>Weather in {country.capital}</h3>
+      <b>temperature: </b> {weather.temperature} Celsius <br />
+      <img src={weather.weather_icons[0]} alt={country.capital}></img><br />
+      <b>wind: </b> {weather.wind_speed} kph direction {weather.wind_dir}<br />
+    </div>
   </div>
 )
 
@@ -33,16 +40,30 @@ const App = () => {
   const [ newFilter, setNewFilter ] = useState('')
   const [ isOpen, setIsOpen ] = useState(false)
   const [ currentCountry, setCurrentCountry ] = useState()
+  const [ capital, setCapital ] = useState("Helsinki")
+  const [ weather, setWeather] = useState()
+  const [ isOnce, setIsOnce] = useState(true)
 
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/name/' + newFilter)
       .then(response => {
+        setIsOnce(true)
         setCountries(response.data)
       })
   }, [newFilter])
 
+  useEffect(() => {
+    axios
+      .get('http://api.weatherstack.com/current?access_key=6f9a08128bab1d52769934547b872778&query='
+          + capital)
+      .then(response => {
+        setWeather(response.data.current)
+      })
+  }, [capital])
+
   const onClick = (country) => () => {
+    setCapital(country.capital)
     setCurrentCountry(country.name)
     setIsOpen(!isOpen)
   }
@@ -50,13 +71,23 @@ const App = () => {
   const showCountryInfo = country => {
     if (isOpen && country.name === currentCountry) {
       return (
-        <CountryInfo country={country}/>
+        <CountryInfo 
+          country={country}
+          weather={weather}
+        />
       )
     }
 
     return (
       <></>
     )
+  }
+
+  const setOnceCapital = (country) => {
+    if (isOnce) {
+      setCapital(country.capital)
+      setIsOnce(false)
+    }
   }
 
   const countriesList = 
@@ -72,7 +103,14 @@ const App = () => {
       ) 
       : () => (
           countries.map(country =>
-            <CountryInfo country={country} />
+            <div>
+              {setOnceCapital(country)}
+              <CountryInfo
+                key={country.numericCode} 
+                country={country}
+                weather={weather}
+              />
+            </div>
           )
         )
       
