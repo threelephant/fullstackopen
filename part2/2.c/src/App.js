@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Note from './components/Note'
 import noteService from './services/notes'
 
-const App = (props) => {
+const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)

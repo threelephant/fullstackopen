@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './Components/Filter'
 import PersonForm from './Components/PersonForm'
 import Persons from './Components/Persons'
@@ -21,10 +20,28 @@ const App = () => {
 
   const namesFilter = persons.filter(person =>
     person.name.toLowerCase().includes(newFilter)
-  ) 
+  )
+
+  const deletePerson = id => () => {
+    noteService
+      .deleteNote(id)
+        .then(returnedNote => {
+          noteService
+            .getAll()
+            .then(initialNotes => {
+              setPersons(initialNotes)
+          })
+          console.log(returnedNote)
+        })
+  }
 
   const names = () => namesFilter.map(person =>
-    <li key={person.name}>{person.name} {person.phone}</li>
+    <li key={person.name}>
+      {person.name} {person.phone}
+      <button onClick={deletePerson(person.id)}>
+        delete
+      </button>
+    </li>
   )
 
   const addName = (event) => {
