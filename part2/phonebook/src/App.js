@@ -4,6 +4,7 @@ import PersonForm from './Components/PersonForm'
 import Persons from './Components/Persons'
 import noteService from './Services/notes'
 import Notification from './Components/Notification'
+import ErrorNotification from './Components/ErrorNotification'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -11,6 +12,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
   const [ message, setMessage] = useState(null)
+  const [ errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService
@@ -77,14 +79,24 @@ const App = () => {
         noteService
           .update(updatedPerson.id, updatedPerson).then(returnedNote => {
             setPersons(persons.map(p => p.id !== updatedPerson.id ? p : returnedNote))
+
+            setMessage(
+              `Updated ${updatedPerson.name}`
+            )
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
           })
-        
-        setMessage(
-          `Updated ${updatedPerson.name}`
-        )
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+          .catch(error => {
+            setErrorMessage(
+              `Information of '${updatedPerson.name}' has already been removed from server`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+
+            setPersons(persons.filter(p => p.id !== updatedPerson.id))
+          })
       }
     }
 
@@ -108,6 +120,7 @@ const App = () => {
     <>
       <h2>Phonebook</h2>
       <Notification message={message} />
+      <ErrorNotification message={errorMessage} />
       <Filter
         value={newFilter}
         onChange={handleFilterChange}
