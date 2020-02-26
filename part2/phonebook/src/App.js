@@ -14,7 +14,7 @@ const App = () => {
     noteService
       .getAll()
         .then(initialNotes => {
-        setPersons(initialNotes)
+          setPersons(initialNotes)
       })
   }, [])
 
@@ -22,23 +22,25 @@ const App = () => {
     person.name.toLowerCase().includes(newFilter)
   )
 
-  const deletePerson = id => () => {
-    noteService
-      .deleteNote(id)
-        .then(returnedNote => {
-          noteService
-            .getAll()
-            .then(initialNotes => {
-              setPersons(initialNotes)
+  const deletePerson = person => () => {
+    if (window.confirm(`Delete ${person.name}`)) {
+      noteService
+        .deleteNote(person.id)
+          .then(_ => {
+            setPersons(persons.filter(p => p.id !== person.id))
+            // noteService
+            //   .getAll()
+            //   .then(initialNotes => {
+            //     setPersons(initialNotes)
+            // })
           })
-          console.log(returnedNote)
-        })
+    }
   }
 
   const names = () => namesFilter.map(person =>
     <li key={person.name}>
       {person.name} {person.phone}
-      <button onClick={deletePerson(person.id)}>
+      <button onClick={deletePerson(person)}>
         delete
       </button>
     </li>
@@ -63,7 +65,19 @@ const App = () => {
           })
           
     } else {    
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const changedPerson = persons.find(p => p.name === newName)
+
+        const updatedPerson = {
+          ...changedPerson,
+          phone: newPhone
+        }
+
+        noteService
+          .update(updatedPerson.id, updatedPerson).then(returnedNote => {
+            setPersons(persons.map(p => p.id !== updatedPerson.id ? p : returnedNote))
+          })
+      }
     }
 
     setNewName('')
