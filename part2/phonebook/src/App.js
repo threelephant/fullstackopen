@@ -3,12 +3,14 @@ import Filter from './Components/Filter'
 import PersonForm from './Components/PersonForm'
 import Persons from './Components/Persons'
 import noteService from './Services/notes'
+import Notification from './Components/Notification'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newFilter, setNewFilter ] = useState('')
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
+  const [ message, setMessage] = useState(null)
 
   useEffect(() => {
     noteService
@@ -28,11 +30,6 @@ const App = () => {
         .deleteNote(person.id)
           .then(_ => {
             setPersons(persons.filter(p => p.id !== person.id))
-            // noteService
-            //   .getAll()
-            //   .then(initialNotes => {
-            //     setPersons(initialNotes)
-            // })
           })
     }
   }
@@ -60,10 +57,14 @@ const App = () => {
         .create(nameObject)
           .then(returnedNote => {
             setPersons(persons.concat(returnedNote))
-            setNewName('')
-            setNewPhone('')
           })
-          
+      
+      setMessage(
+        `Added ${nameObject.name}`
+      )
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     } else {    
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const changedPerson = persons.find(p => p.name === newName)
@@ -77,6 +78,13 @@ const App = () => {
           .update(updatedPerson.id, updatedPerson).then(returnedNote => {
             setPersons(persons.map(p => p.id !== updatedPerson.id ? p : returnedNote))
           })
+        
+        setMessage(
+          `Updated ${updatedPerson.name}`
+        )
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       }
     }
 
@@ -99,6 +107,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter
         value={newFilter}
         onChange={handleFilterChange}
