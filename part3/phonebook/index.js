@@ -4,7 +4,6 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
 app.use(bodyParser.json())
-app.use(morgan('combined'))
 
 let persons = [
   {
@@ -28,6 +27,15 @@ let persons = [
     id: 4
   },
 ]
+
+morgan.token('data', (req, res) => {
+  if (req.method === 'POST') {
+    return JSON.stringify(req.body)
+  }
+
+  return null
+})
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
 const generateId = () => {
   const MAX_ID = 9999999999
