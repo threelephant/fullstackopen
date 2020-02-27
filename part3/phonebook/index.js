@@ -65,9 +65,6 @@ app.post('/api/persons', (req, res) => {
   }
 
   const findPerson = persons.findIndex(person => person.name === body.name)
-
-  console.log(findPerson)
-
   if (findPerson !== -1) {
     return res.status(400).json({
       error: 'name must be unique'
