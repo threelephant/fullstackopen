@@ -35,6 +35,7 @@ morgan.token('data', (req, res) => {
 
   return null
 })
+
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
 const generateId = () => {
